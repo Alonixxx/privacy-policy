@@ -3,6 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none';">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Smart Home Control Hub - Privacy Policy</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -405,6 +407,15 @@
       stroke-linejoin: round;
       vertical-align: middle;
     }
+    .data-card p {
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .summary-card p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
   </style>
 </head>
 <body data-theme="light">
@@ -456,7 +467,7 @@
         <h2>Summary & Core Philosophy</h2>
         <div class="summary-card">
           <div class="summary-card-title">Local-First and Private</div>
-          <p style="margin: 0; font-size: 0.95rem;">The Smart Home Control Hub is built with a <strong>privacy-first, local-first</strong> philosophy. We believe your home activity is personal. All configurations, activity tracking, location coordinates, and security footage are stored directly on your physical hardware, never in our own centralized cloud servers.</p>
+          <p>The Smart Home Control Hub is built with a <strong>privacy-first, local-first</strong> philosophy. We believe your home activity is personal. All configurations, activity tracking, location coordinates, and security footage are stored directly on your physical hardware, never in our own centralized cloud servers.</p>
         </div>
         <p>This Privacy Policy explains how data is gathered and handled when you run the Smart Home Control Hub, connect integration clients (Tuya, eWeLink, Wyze, Alexa), and use mobile locator applications (OwnTracks).</p>
       </section>
@@ -472,7 +483,7 @@
               <span class="data-badge badge-local">Local Storage</span>
               Credentials & Tokens
             </div>
-            <p style="font-size: 0.9rem; margin: 0;">API Access tokens, passwords, and client secrets (e.g., Tuya API credentials, eWeLink login details, Wyze Bridge URLs, and Alexa webhook secrets) are stored locally to talk to device clouds.</p>
+            <p>API Access tokens, passwords, and client secrets (e.g., Tuya API credentials, eWeLink login details, Wyze Bridge URLs, and Alexa webhook secrets) are stored locally to talk to device clouds.</p>
           </div>
           
           <div class="data-card">
@@ -480,7 +491,7 @@
               <span class="data-badge badge-local">Local Storage</span>
               Telemetry & Status
             </div>
-            <p style="font-size: 0.9rem; margin: 0;">Status details (on/off, brightness, power output, presence status, blinds positions) are requested from connected devices to keep the control dashboard accurate in real-time.</p>
+            <p>Status details (on/off, brightness, power output, presence status, blinds positions) are requested from connected devices to keep the control dashboard accurate in real-time.</p>
           </div>
 
           <div class="data-card">
@@ -488,7 +499,7 @@
               <span class="data-badge badge-local">Local Storage</span>
               Live Camera Media
             </div>
-            <p style="font-size: 0.9rem; margin: 0;">Snapshots and feed captures from security cameras (e.g. Wyze cams connected via bridge) are saved locally as secure media logs within your personal Lakehouse directories.</p>
+            <p>Snapshots and feed captures from security cameras (e.g. Wyze cams connected via bridge) are saved locally as secure media logs within your personal Lakehouse directories.</p>
           </div>
 
           <div class="data-card">
@@ -496,7 +507,7 @@
               <span class="data-badge badge-local">Local Storage</span>
               Geolocation Data
             </div>
-            <p style="font-size: 0.9rem; margin: 0;">To run geofenced routines (e.g., turning off heaters when leaving home), latitude, longitude, and distance telemetry from OwnTracks are received and stored on the hub.</p>
+            <p>To run geofenced routines (e.g., turning off heaters when leaving home), latitude, longitude, and distance telemetry from OwnTracks are received and stored on the hub.</p>
           </div>
         </div>
       </section>
@@ -560,7 +571,7 @@
     <p>&copy; 2026 Smart Home Control Hub Project. Created for safe, private home automations.</p>
     <div class="footer-links">
       <a href="#summary">Back to Top</a>
-      <a href="https://github.com" target="_blank" rel="noopener">GitHub Project</a>
+      <a href="https://github.com" target="_blank" rel="noopener noreferrer">GitHub Project</a>
     </div>
   </footer>
 
@@ -574,16 +585,23 @@
       const currentTheme = body.getAttribute('data-theme');
       if (currentTheme === 'light') {
         body.setAttribute('data-theme', 'dark');
-        // Switch icon to moon (represented here simply by updating inner SVG or class)
-        themeIcon.innerHTML = `
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        `;
+        // Switch icon to moon using safe DOM APIs
+        while (themeIcon.firstChild) { themeIcon.removeChild(themeIcon.firstChild); }
+        const moonPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        moonPath.setAttribute('d', 'M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z');
+        themeIcon.appendChild(moonPath);
       } else {
         body.setAttribute('data-theme', 'light');
-        themeIcon.innerHTML = `
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
-        `;
+        // Switch icon to sun using safe DOM APIs
+        while (themeIcon.firstChild) { themeIcon.removeChild(themeIcon.firstChild); }
+        const sunCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        sunCircle.setAttribute('cx', '12');
+        sunCircle.setAttribute('cy', '12');
+        sunCircle.setAttribute('r', '4');
+        const sunPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        sunPath.setAttribute('d', 'M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41');
+        themeIcon.appendChild(sunCircle);
+        themeIcon.appendChild(sunPath);
       }
     });
 
